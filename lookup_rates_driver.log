@@ -1,0 +1,90 @@
+1                                       The SAS System         13:44 Tuesday, November 29, 2016
+
+NOTE: Copyright (c) 2002-2012 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M3) 
+      Licensed to SAS INTERNAL 940 16W26 WX6 JMP CLINICAL 6.0, Site 70160018.
+NOTE: This session is executing on the X64_8PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+      
+      SAS/STAT 14.1
+      SAS/IML 14.1
+
+NOTE: Additional host information:
+
+ X64_8PRO WIN 6.2.9200  Workstation
+
+NOTE: SAS initialization used:
+      real time           0.26 seconds
+      cpu time            0.24 seconds
+      
+1          %let path = %str(C:\Python27\Projects\Kaman\code);
+2          %include "&path.\lookup_rates.sas";
+76         %include "&path.\autoexec.sas";
+105        libname output "C:\Python27\Projects\kaman\output";
+NOTE: Libref OUTPUT was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: C:\Python27\Projects\kaman\output
+106        
+107        %let segmentid = %sysget(segmentid);
+108        %let level = %sysget(level);
+109        
+110        %let syscc= 0;
+111        %lookup_rates(
+112          segmentid = &segmentid.
+113          ,level = &level.
+114          ,_output_binned_txn = %str(output.binned_txn)
+115          ,_output_all_txns = %str(output.segment_all_txn)
+116        );
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.03 seconds
+      
+
+NOTE: Table WORK.__OBS__ created, with 43 rows and 3 columns.
+
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.21 seconds
+      cpu time            0.21 seconds
+      
+
+NOTE: PROCEDURE SQL used (Total process time):
+2                                       The SAS System         13:44 Tuesday, November 29, 2016
+
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+
+NOTE: The data set WORK.__RECOMMENDATIONS__ has 3 observations and 3 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: Table OUTPUT.BINNED_TXN created, with 46 rows and 3 columns.
+
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.01 seconds
+      
+
+WARNING: Statement terminated early due to OUTOBS=500 option.
+NOTE: Compressing data set OUTPUT.SEGMENT_ALL_TXN decreased size by 76.92 percent. 
+      Compressed is 3 pages; un-compressed would require 13 pages.
+NOTE: Table OUTPUT.SEGMENT_ALL_TXN created, with 500 rows and 86 columns.
+
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.17 seconds
+      cpu time            0.17 seconds
+      
+
+117        %put syscc=&syscc.;
+syscc=4
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           0.75 seconds
+      cpu time            0.71 seconds
+      

@@ -1,0 +1,115 @@
+1                                       The SAS System         14:00 Tuesday, November 29, 2016
+
+NOTE: Copyright (c) 2002-2012 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M3) 
+      Licensed to SAS INTERNAL 940 16W26 WX6 JMP CLINICAL 6.0, Site 70160018.
+NOTE: This session is executing on the X64_8PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+      
+      SAS/STAT 14.1
+      SAS/IML 14.1
+
+NOTE: Additional host information:
+
+ X64_8PRO WIN 6.2.9200  Workstation
+
+NOTE: SAS initialization used:
+      real time           0.22 seconds
+      cpu time            0.20 seconds
+      
+1          %let path = %str(C:\Python27\Projects\Kaman\code);
+2          %include "&path.\generate_MVP_recs.sas";
+142        %include "&path.\autoexec.sas";
+171        libname output "C:\Python27\Projects\kaman\output";
+NOTE: Libref OUTPUT was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: C:\Python27\Projects\kaman\output
+172        
+173        %let objective = %sysget(objective);
+174        
+175        %let syscc= 0;
+176        %generate_MVP_recs(
+177          Objective_type = &objective.
+178        );
+
+NOTE: The data set WORK.CUSTOMER_TYPE has 3 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.02 seconds
+      cpu time            0.01 seconds
+      
+
+
+NOTE: The data set WORK.CUSTOMER_TIER has 5 observations and 2 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+NOTE: Table WORK.GEOGRAPHY created, with 21 rows and 3 columns.
+
+NOTE: PROCEDURE SQL used (Total process time):
+2                                       The SAS System         14:00 Tuesday, November 29, 2016
+
+      real time           0.48 seconds
+      cpu time            0.37 seconds
+      
+
+WARNING: Statement terminated early due to OUTOBS=100 option.
+NOTE: Table WORK.PRODUCT created, with 100 rows and 5 columns.
+
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.11 seconds
+      cpu time            0.14 seconds
+      
+
+NOTE: The PROCEDURE SQL printed page 1.
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.04 seconds
+      cpu time            0.03 seconds
+      
+
+
+NOTE: There were 100 observations read from the data set WORK.PRODUCT.
+NOTE: The data set WORK.PRODUCT has 100 observations and 6 variables.
+NOTE: DATA statement used (Total process time):
+      real time           0.00 seconds
+      cpu time            0.00 seconds
+      
+
+NOTE: The execution of this query involves performing one or more Cartesian product joins that 
+      can not be optimized.
+NOTE: Table WORK.MVP_RECOMMENDATIONS created, with 31500 rows and 12 columns.
+
+NOTE: PROCEDURE SQL used (Total process time):
+      real time           0.01 seconds
+      cpu time            0.01 seconds
+      
+
+
+WARNING: Multiple lengths were specified for the variable Inv_AreaName by input data set(s). 
+         This can cause truncation of data.
+WARNING: Multiple lengths were specified for the variable Inv_RegionName by input data set(s). 
+         This can cause truncation of data.
+NOTE: There were 31500 observations read from the data set WORK.MVP_RECOMMENDATIONS.
+NOTE: The data set OUTPUT.MVP_RECOMMENDATIONS has 31500 observations and 13 variables.
+NOTE: Compressing data set OUTPUT.MVP_RECOMMENDATIONS decreased size by 42.57 percent. 
+      Compressed is 58 pages; un-compressed would require 101 pages.
+NOTE: DATA statement used (Total process time):
+      real time           0.03 seconds
+      cpu time            0.03 seconds
+      
+
+179        
+180        
+3                                       The SAS System         14:00 Tuesday, November 29, 2016
+
+181        %put syscc=&syscc.;
+syscc=4
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           1.03 seconds
+      cpu time            0.85 seconds
+      

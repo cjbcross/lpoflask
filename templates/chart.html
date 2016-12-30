@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Price Optimization</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-table.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300" rel="stylesheet">
+    <!-- JS -->
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-table.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+    <script src="js/angular-chart.min.js"></script>
+   <script>
+        var $table = $('#sasTable');
+        $(function () {
+            $('#toolbar').find('select').change(function () {
+                $table.bootstrapTable('destroy').bootstrapTable({
+                    exportDataType: $(this).val()
+                });
+            });
+        })
+    </script>
+    <style>
+    div.navdiv {
+        width: 100%;
+    }
+
+    div.maindiv {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .table {width: 75%; }
+
+    img.resize{
+        max-width:99%;
+    }
+
+    img.resize2{
+        height:25px;
+        width:60px;
+    }
+
+    .im-centered {
+          min-height: 50%;  /* Fallback for vh unit */
+          min-height: 50vh; /* You might also want to use
+                                'height' property instead.
+
+                                Note that for percentage values of
+                                'height' or 'min-height' properties,
+                                the 'height' of the parent element
+                                should be specified explicitly.
+
+                                In this case the parent of '.vertical-center'
+                                is the <body> element */
+
+          /* Make it a flex container */
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+
+          /* Align the bootstrap's container vertically */
+            -webkit-box-align : center;
+          -webkit-align-items : center;
+               -moz-box-align : center;
+               -ms-flex-align : center;
+                  align-items : center;
+
+          /* In legacy web browsers such as Firefox 9
+             we need to specify the width of the flex container */
+          width: 100%;
+
+          /* Also 'margin: 0 auto' doesn't have any effect on flex items in such web browsers
+             hence the bootstrap's container won't be aligned to the center anymore.
+
+             Therefore, we should use the following declarations to get it centered again */
+                 -webkit-box-pack : center;
+                    -moz-box-pack : center;
+                    -ms-flex-pack : center;
+          -webkit-justify-content : center;
+                  justify-content : center;
+                  }
+
+      body { padding-top: 90px; }
+      .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover { background-color:grey; }
+    </style>
+</head>
+
+<body style="font-family: 'Nunito', sans-serif;" ng-app="app">
+
+<div class="navbar navbar-default navbar-fixed-top" style="background-color:#184961;">
+    <a class="navbar-brand" href="/" style="color:white;">SAS Customer Pricing Optimization</a>
+    <form action="/logout/" method="post">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown" style="padding-right:10px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white;"><i class="fa fa-user" aria-hidden="true"></i> Logged in as John Smith <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" style="margin-right:10px;">
+                    <li style="padding-left: 45px;"><button type="submit" class="btn btn-default btn-sm navbar-btn">Log out</button></li>
+                </ul>
+            </li>
+            <li style="padding-top:12px;padding-right:27px;"><img class="resize2" src="{{ url_for('static', filename='sas-white.png') }}"></li>
+        </ul>
+    </form>
+</div>
+
+<div id="container" style="width: 50%;margin-left: auto;margin-right: auto;padding-top:30px;" ng-controller="BarCtrl">
+<canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-colors="colors">
+</canvas>
+</div>
+<br>
+<div class="maindiv">
+    <!--<button class="btn btn-success" type="button" onclick="window.location.reload();">Action 1</button>-->
+    <!--<button class="btn btn-success" type="button" onclick="window.location.reload();">Action 2</button>-->
+    <div>
+        <div id="toolbar">
+            <!--<select class="form-control">-->
+                <!--<option value="" selected>Export Basic</option>-->
+                <!--<option value="all">Export All</option>-->
+                <!--<option value="selected">Export Selected</option>-->
+            <!--</select>-->
+            <button class="btn btn-default" type="button" onclick="window.location.reload();">Reset Table</button>
+        </div>
+    <table id="sasTable" name="sasTable"
+           data-toggle="table"
+           data-search="true"
+           data-show-columns="true"
+           data-toolbar="#toolbar"
+           data-show-pagination-switch="true"
+           data-show-export="true"
+           data-pagination="true"
+           data-click-to-select="true"
+           data-page-list="[10, 25, 50, 100, ALL]"
+           data-filter-control="true"
+           data-filter-show-clear="true"
+           data-url="http://localhost:5000/charttab">
+    </table>
+    </div>
+</div>
+
+<script>
+    function initTable() {
+        $('#sasTable').bootstrapTable({
+            columns: [
+
+                    {
+                        field: 'Inv_AreaName',
+                        title: 'Inv_AreaName',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    }, {
+                        field: 'Inv_RegionName',
+                        title: 'Inv_RegionName',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    }, {
+                        field: 'Inv_DistrictName',
+                        title: 'Inv_DistrictName',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    },{
+                        field: 'CTM_ID',
+                        title: 'CTM_ID',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    },{
+                        field: 'MFG_ID',
+                        title: 'MFG_ID',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    },{
+                        field: 'ProductCatCode',
+                        title: 'ProductCatCode',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    },{
+                        field: 'ODInvPartNbr',
+                        title: 'ODInvPartNbr',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    },{
+                        field: 'ODInvBillDate',
+                        title: 'ODInvBillDate',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center',
+                        formatter: pctFormatter
+                    },{
+                        field: 'ODInvShipQty',
+                        title: 'ODInvShipQty',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    },{
+                        field: 'TargetExtPrice',
+                        title: 'TargetExtPrice',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center',
+                        formatter: priceFormatter
+                    },{
+                        field: 'ODExtPrice',
+                        title: 'ODExtPrice',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center',
+                        formatter: priceFormatter
+                    },{
+                        field: 'Discount',
+                        title: 'Discount',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center',
+                        formatter: priceFormatter
+                    }
+            ]
+        });
+    }
+
+    initTable();
+
+    function priceFormatter(data) {
+        return '$' + data.toFixed(2);
+    }
+
+    function pctFormatter(data) {
+		data = new Date(data+14400000);
+        return data.toLocaleDateString();
+    }
+
+
+</script>
+<script>
+angular.module("app", ["chart.js"]).controller("BarCtrl", function ($scope, $http) {
+//angular.module("app", ["chart.js"]).controller("BarCtrl", function ($scope) {
+  $scope.labels = ['6%', '8%', '12%', '14%', '20%', '26%', '42%', '48%', '50%', '52%', '56%', '64%', '66%', '70%', '74%', '76%', '78%', '86%'];
+  $scope.options = { legend: { display: true } };
+  $scope.series = ['Floor', 'Target', 'Start', 'Observation'];
+  $scope.colors = ['#f7464a','#97bbcd', '#46bfbd', '#dcdcdc'];
+  
+  //$scope.data = [];
+
+    $http({
+        method  : 'GET',
+        url     : '/chartout?segmentid='+{{ g.segmentid }}+'&level='+{{ g.level }},
+        headers : {'Content-Type': 'application/json'}
+    }).success(function(data, status, headers, config){
+        var obj = data;
+	}).error(function (data, status, headers, config) {
+       alert(data);
+    });
+	
+
+  $scope.data = [
+    [null, null, 16, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null], //Floor
+    [null, null, null, null, null, null, null, null, null, null, null, 16, null, null, null, null, null, null], //Target
+    [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 16, null, null], //Start
+	[2, 12, 16, 5, 2, 2, 1, 2, 1, 1, 1, 12, 2, 1, 12, 2, 7, 1] //Obs
+  ];
+});
+</script>
+</body>
+</html>

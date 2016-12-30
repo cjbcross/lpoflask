@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html" ng-app="ui.bootstrap.demo">
+<head>
+    <meta charset="utf-8">
+    <title>Price Optimization</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300" rel="stylesheet">
+    <!-- JS -->
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.2.js"></script>
+    <style>
+    .btn-primary{background-color:#184961;}
+
+    img.resize{
+        max-width:99%;
+    }
+
+    img.resize2{
+        height:25px;
+        width:60px;
+    }
+
+    .im-centered {
+          min-height: 50%;  /* Fallback for vh unit */
+          min-height: 50vh; /* You might also want to use
+                                'height' property instead.
+
+                                Note that for percentage values of
+                                'height' or 'min-height' properties,
+                                the 'height' of the parent element
+                                should be specified explicitly.
+
+                                In this case the parent of '.vertical-center'
+                                is the <body> element */
+
+          /* Make it a flex container */
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+
+          /* Align the bootstrap's container vertically */
+            -webkit-box-align : center;
+          -webkit-align-items : center;
+               -moz-box-align : center;
+               -ms-flex-align : center;
+                  align-items : center;
+
+          /* In legacy web browsers such as Firefox 9
+             we need to specify the width of the flex container */
+          width: 100%;
+
+          /* Also 'margin: 0 auto' doesn't have any effect on flex items in such web browsers
+             hence the bootstrap's container won't be aligned to the center anymore.
+
+             Therefore, we should use the following declarations to get it centered again */
+                 -webkit-box-pack : center;
+                    -moz-box-pack : center;
+                    -ms-flex-pack : center;
+          -webkit-justify-content : center;
+                  justify-content : center;
+                  }
+
+      body { padding-top: 90px; }
+
+      .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover { background-color:grey; }
+    </style>
+</head>
+
+<body style="font-family: 'Nunito', sans-serif;"  ng-controller="MainCtrl">
+
+<div class="navbar navbar-default navbar-fixed-top" style="background-color:#184961;">
+    <a class="navbar-brand" href="/" style="color:white;">SAS Customer Pricing Optimization</a>
+    <form action="/logout/" method="post">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown" style="padding-right:10px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white;"><i class="fa fa-user" aria-hidden="true"></i> Logged in as John Smith <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" style="margin-right:10px;">
+                    <li style="padding-left: 45px;"><button type="submit" class="btn btn-default btn-sm navbar-btn">Log out</button></li>
+                </ul>
+            </li>
+            <li style="padding-top:12px;padding-right:27px;"><img class="resize2" src="{{ url_for('static', filename='sas-white.png') }}"></li>
+        </ul>
+    </form>
+</div>
+
+<div class="im-centered">
+    <div class="well" style="width:85%;text-align:center;">
+        <img class="resize" src="{{ url_for('static', filename='Kaman.png') }}">
+<h2>Welcome to the KAMAN Customer Pricing Optimization Start Page</h2>
+        <p>To begin using the application, select from an action below.</p>
+    <div class="row">
+        <a class="btn btn-primary btn-lg text-center" data-toggle="modal" data-target="#myModal" aria-label="Settings">
+            <i class="fa fa-users fa-5x" aria-hidden="true"></i><br>&nbsp;<br>Review<br>Customer<br>Performance
+        </a>
+
+        <a class="btn btn-primary btn-lg text-center" data-toggle="modal" data-target="#myModal2" aria-label="Settings">
+            <i class="fa fa-bar-chart fa-5x" aria-hidden="true"></i><br>&nbsp;<br>Review<br>Local<br>Exceptions
+        </a>
+
+        <a class="btn btn-primary btn-lg text-center" href="/config.html" aria-label="Settings">
+            <i class="fa fa-table fa-5x" aria-hidden="true"></i><br>Configure<br>Optimization<br>& Segmentation<br>Parameters
+        </a>
+
+        <a class="btn btn-primary btn-lg text-center" href="/opt.html" aria-label="Settings">
+            <i class="fa fa-check-square fa-5x" aria-hidden="true"></i><br>&nbsp;<br>Optimize MVP<br>(List Price)<br>Recommendations
+        </a>
+
+        <a class="btn btn-primary btn-lg text-center disabled" href="#" aria-label="Settings">
+            <i class="fa fa-edit fa-5x" aria-hidden="true"></i><br>&nbsp;<br>Inventory<br>Management<br>&nbsp;
+        </a>
+
+        <a class="btn btn-primary btn-lg text-center disabled" href="#" aria-label="Settings">
+            <i class="fa fa-line-chart fa-5x" aria-hidden="true"></i><br>&nbsp;<br>Sales<br>Forecasting<br>&nbsp;
+        </a>
+    </div>
+        <br>
+        <p><a href="http://www.sas.com/en_us/legal/copyright.html" target="_blank">© SAS Institute Inc. All Rights Reserved</a></p>
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form action="/customers/" method="post" autocomplete="off">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Enter Customer ID</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <input type="text" class="form-control" name="customer">
+                    <!--<input name="customer" id="customer" type="text" ng-model="customer" uib-typeahead="customer as customer.id for customer in customers | filter:{id:$viewValue}" class="form-control" typeahead-show-hint="true" typeahead-min-length="3">-->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form action="/ids/" method="post" autocomplete="off">
+            <input type="hidden" id="customer_hidden" name="customer_hidden"/>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Enter Customer ID</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <!--<input type="text" class="form-control" name="customer">-->
+                    <input onchange="updateInput(this.value)" name="customer" id="customer" type="text" ng-model="customer" uib-typeahead="customer as customer.id for customer in customers | filter:{id:$viewValue}" class="form-control" typeahead-show-hint="true" typeahead-min-length="3">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+<script>
+angular
+  .module('ui.bootstrap.demo', ['ngAnimate', 'ui.bootstrap'])
+  .controller('MainCtrl', function($scope, $http) {
+    $http({
+        method  : 'GET',
+        url     : '/drop/',
+        headers : {'Content-Type': 'application/json'}
+    }).success(function(data, status, headers, config){
+        $scope.customers = data;
+    }).error(function (data, status, headers, config) {
+        alert(data);
+    });
+  });
+
+  function updateInput(ish){
+    document.getElementById("customer_hidden").value = ish;
+  }
+
+</script>
+
+</body>
+</html>

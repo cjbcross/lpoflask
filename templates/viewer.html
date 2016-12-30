@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>EDC Options</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/xeditable.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <style>
+        img.resize {
+           max-width:70%;
+           max-height:70%;
+        }
+
+        div.navdiv {
+            width: 100%;
+        }
+
+        div.maindiv {
+            padding-left: 15px;
+        }
+
+        div[ng-app] { margin: 10px; }
+        .table {width: 100%; }
+        form[editable-form] > div {margin: 10px 0;}
+    </style>
+
+    <!-- JS -->
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-messages.min.js"></script>
+</head>
+
+<body id="mainBody">
+
+    <div class="navdiv">
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+        <div class="navbar-header">
+            <img alt="Brand" class="resize" src="{{ url_for('static', filename='gsk-logo.png') }}">
+        </div>
+            <ul class="nav navbar-nav">
+                <li><a href="/">Options Configuration</a></li>
+                <li><a href="/control.html">Control Editor</a></li>
+                <li><a href="/itemdata.html">Promote Item Data</a></li>
+                <li class="active"><a href="#">Trial Management</a></li>
+            </ul>
+            <form action="/logout/" method="post">
+            <ul class="nav navbar-nav navbar-right">
+                <li><p class="navbar-text">Welcome, {{ g.user }}</p></li>
+                <li style="padding-right: 15px;"><button type="submit" class="btn btn-default btn-sm navbar-btn">Log out</button></li>
+                <li>&nbsp;</li>
+            </ul>
+            </form>
+        </div>
+    </nav>
+    </div>
+
+    <br><br>
+    <div class="page-header">
+    <h3 style="text-align: center;">Trial Management</h3>
+    </div>
+
+
+<div class="container">
+  <form action="/viewer.html" method="post">
+    <div class="form-group">
+    <label>Master of All Trials Path</label>
+        <input type="text" class="form-control" name="sddpath" value="/GSKVX/Files/NVX/ops_pgm/interfaces/edc/dev/ssd_d">
+    </div>
+    <br>
+        <div class="form-group">
+        <label for="inputUser" class="sr-only">Username</label>
+        <input type="username" id="inputUser" name="inputUser" class="form-control" placeholder="SDD Username" required autofocus>
+        <label for="inputPass" class="sr-only">Password</label>
+        <input type="password" id="inputPass" name="inputPass" class="form-control" placeholder="SDD Password" required>
+        </div>
+        <div class="form-group">
+        Select SDD Server:
+        <select id="inputSDD" name="inputSDD">
+          <option value="https://sddjupiter.ondemand.sas.com:443">SDD Jupiter</option>
+          <option value="https://sdduranus.ondemand.sas.com:443">SDD Uranus</option>
+          <option value="https://sddsaturn.ondemand.sas.com:443">SDD Saturn</option>
+        </select>
+            </div>
+      <br>
+    <button type="submit" class="btn btn-primary">Refresh Master of All Trials</button>
+  </form>
+</div>
+
+<div class="container">{{ g.success }}</div>
+
+</body>
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="utf-8">
+    <title>Price Optimization</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/bootstrap-table.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap-editable.css">
+
+    <!-- JS -->
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-table.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.js"></script>
+    <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-1.3.2.js"></script>
+    <script src="js/bootstrap-table-editable.js"></script>
+    <script src="js/bootstrap-editable.js"></script>
+    <style>
+        div.maindiv {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .btn-primary{background-color:#184961;}
+
+    img.resize{
+        max-width:99%;
+    }
+
+    img.resize2{
+        height:25px;
+        width:60px;
+    }
+
+          body { padding-top: 90px; }
+      .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover { background-color:grey; }
+    </style>
+</head>
+
+<body style="font-family: 'Nunito', sans-serif;">
+
+<div class="navbar navbar-default navbar-fixed-top" style="background-color:#184961;">
+    <a class="navbar-brand" href="/" style="color:white;">SAS Customer Pricing Optimization</a>
+    <form action="/logout/" method="post">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown" style="padding-right:10px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white;"><i class="fa fa-user" aria-hidden="true"></i> Logged in as John Smith <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" style="margin-right:10px;">
+                    <li style="padding-left: 45px;"><button type="submit" class="btn btn-default btn-sm navbar-btn">Log out</button></li>
+                </ul>
+            </li>
+            <li style="padding-top:12px;padding-right:27px;"><img class="resize2" src="{{ url_for('static', filename='sas-white.png') }}"></li>
+        </ul>
+    </form>
+</div>
+
+<div class="maindiv">
+<h3 style="text-align:center;">MVP (List Price) Recommendation Configuration</h3>
+<hr>
+    <div class="container" style="width:45%;">
+        <form method="post" action="/mvpopt">
+
+		<h4>Select Parameters</h4>
+		<div class="panel panel-default">
+			<div class="panel-body" style="word-break:normal;">
+				<div class="form-group">
+					<label>Objective</label>
+					<select style="float:right;clear:both;" name="objective">
+						<option value="profit" selected>Profit</option>
+						<option value="revenue">Revenue</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label>Enforce Tier Constraints</label>
+					<select style="float:right;clear:both;" name="tier">
+						<option value="yes">Yes</option>
+						<option value="no" selected>No</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label>Enforce Custom Type Constraints</label>
+					<select style="float:right;clear:both;" name="type">
+						<option value="yes">Yes</option>
+						<option value="no" selected>No</option>
+					</select>
+				</div>
+
+				<div class="form-group">
+					<label>Target Price Change</label>
+					<input type="text" class="form-control" name="target">
+				</div>
+				
+				    <button type="submit" class="btn btn-primary" id="submitButton">Optimize</button>
+
+			</div>
+		</div>
+          
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

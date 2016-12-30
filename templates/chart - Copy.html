@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Price Optimization</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-table.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300" rel="stylesheet">
+    <!-- JS -->
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js"></script>
+    <script src="js/angular-chart.min.js"></script>
+   <script>
+        var $table = $('#sasTable');
+        $(function () {
+            $('#toolbar').find('select').change(function () {
+                $table.bootstrapTable('destroy').bootstrapTable({
+                    exportDataType: $(this).val()
+                });
+            });
+        })
+    </script>
+    <style>
+    div.navdiv {
+        width: 100%;
+    }
+
+    div.maindiv {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .table {width: 75%; }
+
+    img.resize{
+        max-width:99%;
+    }
+
+    img.resize2{
+        height:25px;
+        width:60px;
+    }
+
+    .im-centered {
+          min-height: 50%;  /* Fallback for vh unit */
+          min-height: 50vh; /* You might also want to use
+                                'height' property instead.
+
+                                Note that for percentage values of
+                                'height' or 'min-height' properties,
+                                the 'height' of the parent element
+                                should be specified explicitly.
+
+                                In this case the parent of '.vertical-center'
+                                is the <body> element */
+
+          /* Make it a flex container */
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+
+          /* Align the bootstrap's container vertically */
+            -webkit-box-align : center;
+          -webkit-align-items : center;
+               -moz-box-align : center;
+               -ms-flex-align : center;
+                  align-items : center;
+
+          /* In legacy web browsers such as Firefox 9
+             we need to specify the width of the flex container */
+          width: 100%;
+
+          /* Also 'margin: 0 auto' doesn't have any effect on flex items in such web browsers
+             hence the bootstrap's container won't be aligned to the center anymore.
+
+             Therefore, we should use the following declarations to get it centered again */
+                 -webkit-box-pack : center;
+                    -moz-box-pack : center;
+                    -ms-flex-pack : center;
+          -webkit-justify-content : center;
+                  justify-content : center;
+                  }
+
+      body { padding-top: 90px; }
+    </style>
+</head>
+
+<body style="font-family: 'Nunito', sans-serif;" ng-app="app">
+
+<div class="navbar navbar-default navbar-fixed-top" style="background-color:#184961;">
+    <a class="navbar-brand" href="/" style="color:white;">SAS Customer Pricing Optimization</a>
+    <form action="/logout/" method="post">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown" style="padding-right:10px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white;"><i class="fa fa-user" aria-hidden="true"></i> Logged in as John Smith <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                    <li style="padding-left: 10px;"><button type="submit" class="btn btn-default btn-sm navbar-btn">Log out</button></li>
+                </ul>
+            </li>
+            <li style="padding-top:12px;padding-right:27px;"><img class="resize2" src="{{ url_for('static', filename='sas-white.png') }}"></li>
+        </ul>
+    </form>
+</div>
+
+<div id="container" style="width: 75%;margin-left: auto;margin-right: auto;" ng-controller="BarCtrl">
+<canvas id="bar" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series">
+</canvas>
+</div>
+
+<script>
+angular.module("app", ["chart.js"]).controller("BarCtrl", function ($scope, $http) {
+    $scope.labels = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+
+    $scope.data = [];
+
+    $http({
+        method  : 'GET',
+        url     : '/chartout/',
+        headers : {'Content-Type': 'application/json'}
+    }).success(function(data, status, headers, config){
+        $scope.data = data;
+    }).error(function (data, status, headers, config) {
+        alert(data);
+    });
+});
+</script>
+</body>
+</html>

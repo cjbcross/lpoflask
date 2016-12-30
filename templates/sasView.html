@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Price Optimization</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-table.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300" rel="stylesheet">
+    <!-- JS -->
+    <script src="js/jquery-3.1.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-table.min.js"></script>
+    <script src="js/bootstrap-table-export.js"></script>
+    <script src="js/tableExport.js"></script>
+    <script src="js/bootstrap-table-filter-control.js"></script>
+    <script>
+        var $table = $('#sasTable');
+        $(function () {
+            $('#toolbar').find('select').change(function () {
+                $table.bootstrapTable('destroy').bootstrapTable({
+                    exportDataType: $(this).val()
+                });
+            });
+        })
+
+    </script>
+    <style>
+    div.navdiv {
+        width: 100%;
+    }
+
+    div.maindiv {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .table {width: 75%; }
+
+    img.resize{
+        max-width:99%;
+    }
+
+    img.resize2{
+        height:25px;
+        width:60px;
+    }
+
+    .im-centered {
+          min-height: 50%;  /* Fallback for vh unit */
+          min-height: 50vh; /* You might also want to use
+                                'height' property instead.
+
+                                Note that for percentage values of
+                                'height' or 'min-height' properties,
+                                the 'height' of the parent element
+                                should be specified explicitly.
+
+                                In this case the parent of '.vertical-center'
+                                is the <body> element */
+
+          /* Make it a flex container */
+          display: -webkit-box;
+          display: -moz-box;
+          display: -ms-flexbox;
+          display: -webkit-flex;
+          display: flex;
+
+          /* Align the bootstrap's container vertically */
+            -webkit-box-align : center;
+          -webkit-align-items : center;
+               -moz-box-align : center;
+               -ms-flex-align : center;
+                  align-items : center;
+
+          /* In legacy web browsers such as Firefox 9
+             we need to specify the width of the flex container */
+          width: 100%;
+
+          /* Also 'margin: 0 auto' doesn't have any effect on flex items in such web browsers
+             hence the bootstrap's container won't be aligned to the center anymore.
+
+             Therefore, we should use the following declarations to get it centered again */
+                 -webkit-box-pack : center;
+                    -moz-box-pack : center;
+                    -ms-flex-pack : center;
+          -webkit-justify-content : center;
+                  justify-content : center;
+                  }
+
+      body { padding-top: 90px; }
+      .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover { background-color:grey; }
+    </style>
+</head>
+
+<body style="font-family: 'Nunito', sans-serif;">
+
+<div class="navbar navbar-default navbar-fixed-top" style="background-color:#184961;">
+    <a class="navbar-brand" href="/" style="color:white;">SAS Customer Pricing Optimization</a>
+    <form action="/logout/" method="post">
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown" style="padding-right:10px;"><a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:white;"><i class="fa fa-user" aria-hidden="true"></i> Logged in as John Smith <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" style="margin-right:10px;">
+                    <li style="padding-left: 45px;"><button type="submit" class="btn btn-default btn-sm navbar-btn">Log out</button></li>
+                </ul>
+            </li>
+            <li style="padding-top:12px;padding-right:27px;"><img class="resize2" src="{{ url_for('static', filename='sas-white.png') }}"></li>
+        </ul>
+    </form>
+</div>
+
+<div class="maindiv">
+    <h4>Viewing Data for Customer ID: {{ g.cust_id }}</h4>
+    <!--<button class="btn btn-success" type="button" onclick="window.location.reload();">Action 1</button>-->
+    <!--<button class="btn btn-success" type="button" onclick="window.location.reload();">Action 2</button>-->
+    <div>
+        <div id="toolbar">
+            <!--<select class="form-control">-->
+                <!--<option value="" selected>Export Basic</option>-->
+                <!--<option value="all">Export All</option>-->
+                <!--<option value="selected">Export Selected</option>-->
+            <!--</select>-->
+            <button class="btn btn-default" type="button" onclick="window.location.reload();">Reset Table</button>
+        </div>
+    <table id="sasTable" name="sasTable"
+           data-toggle="table"
+           data-search="true"
+           data-show-columns="true"
+           data-toolbar="#toolbar"
+           data-show-pagination-switch="true"
+           data-show-export="true"
+           data-pagination="true"
+           data-click-to-select="true"
+           data-page-list="[10, 25, 50, 100, ALL]"
+           data-filter-control="true"
+           data-filter-show-clear="true"
+           data-url="http://localhost:5000/csv?id={{ g.cust_id }}"
+           >
+    </table>
+    </div>
+</div>
+
+<script>
+    function initTable() {
+        $('#sasTable').bootstrapTable({
+            columns: [
+
+                    {
+                        field: 'Product_hierarchy_1',
+                        title: 'Product_hierarchy_1',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    }, {
+                        field: 'Product_hierarchy_2',
+                        title: 'Product_hierarchy_2',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    }, {
+                        field: 'Product_hierarchy_3',
+                        title: 'Product_hierarchy_3',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    },{
+                        field: 'ODInvPartNbr',
+                        title: 'ODInvPartNbr',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center'
+                    },{
+                        field: 'Customer_Spend',
+                        title: 'Customer Spending',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center',
+                        formatter: priceFormatter
+                    },{
+                        field: 'margin_pct',
+                        title: 'Margin',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center',
+                        formatter: pctFormatter
+                    },{
+                        field: 'Floor',
+                        title: 'Floor',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center',
+                        formatter: pctFormatter
+                    },{
+                        field: 'Target',
+                        title: 'Target',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center',
+                        formatter: pctFormatter
+                    },{
+                        field: 'Start',
+                        title: 'Start',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center',
+                        formatter: pctFormatter
+                    },{
+                        field: 'Achievable_margin',
+                        title: 'Achievable',
+                        sortable: true,
+                        filterControl: 'select',
+                        align: 'center',
+                        formatter: pctFormatter
+                    },{
+                        field: 'Details',
+                        title: 'Details',
+                        align: 'center'
+                    }
+            ]
+        });
+    }
+
+    initTable();
+
+    function priceFormatter(data) {
+        return '$' + data.toFixed(2);
+    }
+
+    function pctFormatter(data) {
+        data *= 100;
+        return data.toFixed(2) + '%';
+    }
+
+
+</script>
+
+</body>
+</html>
